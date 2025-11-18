@@ -1,10 +1,612 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>你好，我是张三</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amagicsoft Website URL Index</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .url-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .url-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+        }
+        .url-item a {
+            color: #2196F3;
+            text-decoration: none;
+            word-break: break-all;
+            display: block;
+        }
+        .url-item a:hover {
+            text-decoration: underline;
+        }
+        .language-filter {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .language-filter button {
+            margin: 0 5px;
+            padding: 8px 15px;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .language-filter button.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .stats {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .url-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .url-path {
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-    <h1>欢迎访问2 magicdatareocvery.github.io！</h1>
-</body>
+    <div class="container">
+        <h1>Amagicsoft Website URL Index</h1>
+        
+        <div class="stats">
+            <p>Total <strong id="total-count">0</strong> URLs | 
+            <span id="lang-stats"></span>
+            </p>
+        </div>
+        
+        <div class="language-filter">
+            <button class="filter-btn active" data-lang="all">ALL</button>
+            <button class="filter-btn" data-lang="jp">Japanese (JP)</button>
+            <button class="filter-btn" data-lang="kr">Korean (KR)</button>
+            <button class="filter-btn" data-lang="zh">Traditional Chinese (ZH)</button>
+            <button class="filter-btn" data-lang="en">English (EN)</button>
+        </div>
+        
+        <div class="url-list" id="url-container">
+            <!-- URLs will be populated by JavaScript -->
+        </div>
+    </div>
 
+    <script>
+        const urls = [
+            "https://www.amagicsoft.com/jp/%E3%82%BF%E3%82%B0/magic-recovery-key-jp",
+            "https://www.amagicsoft.com/jp/about-amagicsoft",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/7-useful-methods-to-auto-unlock-bitlocker.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/comprehensive-guide-to-bitlocker-to-go.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/disable-bitlocker-in-windows-11-home.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/disable-bitlocker-on-windows-10-and-11.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/enable-bitlocker-using-group-policy.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/find-bitlocker-recovery-key-in-active-directory.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/find-bitlocker-recovery-key-with-key-id.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/how-to-find-your-dell-bitlocker-recovery-key.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/lenovo-bitlocker-issue-on-windows-10.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/recover-your-bitlocker-recovery-key.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/remove-or-bypass-bitlocker-without-recovery-key.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/removing-bitlocker-encryption-a-comprehensive-guide.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/retrieve-your-bitlocker-key.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/should-i-be-worried-about-bitlocker.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/turn-off-bitlocker-in-windows-11.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/unlock-bitlocker-on-windows-10.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/unlock-bitlocker-with-command-line.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/what-is-tpm.html",
+            "https://www.amagicsoft.com/jp/bitlocker-recovery/windows-11-upgrade-and-clean-installation.html",
+            "https://www.amagicsoft.com/jp/blog",
+            "https://www.amagicsoft.com/jp/buy-magic-data-recovery",
+            "https://www.amagicsoft.com/jp/buy-magic-recovery-key",
+            "https://www.amagicsoft.com/jp/contact",
+            "https://www.amagicsoft.com/jp/deleted-file-recovery/deleted-data-recovery.html",
+            "https://www.amagicsoft.com/jp/deleted-file-recovery/how-to-recover-deleted-files-from-flash-drive-4-ways.html",
+            "https://www.amagicsoft.com/jp/deleted-file-recovery/how-to-retrieve-deleted-files.html",
+            "https://www.amagicsoft.com/jp/deleted-file-recovery/how-to-use-recuva-data-recovery.html",
+            "https://www.amagicsoft.com/jp/deleted-file-recovery/recover-files-deleted-from-recycle-bin.html",
+            "https://www.amagicsoft.com/jp/format-file-recovery/recover-raw-partition.html",
+            "https://www.amagicsoft.com/jp/format-file-recovery/unformat-sd-card.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/best-ntfs-recovery-software.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/buffalo-data-recovery.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/data-recovery-service-docomo.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/digital-data-recovery.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/express-data-recovery.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/extract-data-from-a-hard-disk.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/hard-disk-drive-recovery-software.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/hard-disk-repair.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/hdd-data-recovery-cost-in-2025.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/hdd-data-recovery.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/hdd-logical-failure.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/how-to-recover-files-from-a-formatted-drive.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/how-to-retrieve-data-from-a-hard-disk.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/if-you-feel-embarrassed-about-data-recovery.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/lost-partition-recovery.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/pc-data-recovery.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/recover-deleted-files.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/recover-unrecognized-hard-drive.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/the-easiest-way-of-seagate-data-recovery.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/usb-lost-data-recovery.html",
+            "https://www.amagicsoft.com/jp/hdd-recovery/usb-memory-failure.html",
+            "https://www.amagicsoft.com/jp/license-agreement",
+            "https://www.amagicsoft.com/jp/license-key-recovery/about-windows-11-activation-keys.html",
+            "https://www.amagicsoft.com/jp/license-key-recovery/find-adobe-photoshop-product-key.html",
+            "https://www.amagicsoft.com/jp/license-key-recovery/find-microsoft-office-product-key.html",
+            "https://www.amagicsoft.com/jp/license-key-recovery/find-product-keys-for-installed-software.html",
+            "https://www.amagicsoft.com/jp/license-key-recovery/find-your-3ds-max-product-key.html",
+            "https://www.amagicsoft.com/jp/license-key-recovery/find-youtube-to-mp3-software-keys.html",
+            "https://www.amagicsoft.com/jp/license-key-recovery/fixo-your-microsoft-365-license-will-be-deactivated-soon.html",
+            "https://www.amagicsoft.com/jp/license-key-recovery/get-4k-video-downloader-plus-license-key.html",
+            "https://www.amagicsoft.com/jp/license-key-recovery/get-windows-10-product-key.html",
+            "https://www.amagicsoft.com/jp/license-key-recovery/obtain-cd-keys-for-windows-10.html",
+            "https://www.amagicsoft.com/jp/license-key-recovery/windows-10-support-will-end.html",
+            "https://www.amagicsoft.com/jp/license-key-recovery/windows-product-key-viewer.html",
+            "https://www.amagicsoft.com/jp/lost-file-recovery/data-recovery-option-in-japan.html",
+            "https://www.amagicsoft.com/jp/lost-file-recovery/data-recovery-recommendations.html",
+            "https://www.amagicsoft.com/jp/lost-file-recovery/data-rescue-review-and-magic-data-recovery.html",
+            "https://www.amagicsoft.com/jp/lost-file-recovery/how-to-recover-chk-files.html",
+            "https://www.amagicsoft.com/jp/lost-file-recovery/how-to-recover-overwritten-files-on-windows-10-4-methods.html",
+            "https://www.amagicsoft.com/jp/lost-file-recovery/speed-data-recovery-for-free.html",
+            "https://www.amagicsoft.com/jp/lost-file-recovery/upgrade-to-windows-11-25h2.html",
+            "https://www.amagicsoft.com/jp/lost-file-recovery/vmware-data-recovery.html",
+            "https://www.amagicsoft.com/jp/lost-file-recovery/windows-11-25h2-update-issues-recover-lost-files.html",
+            "https://www.amagicsoft.com/jp/magic-data-recovery",
+            "https://www.amagicsoft.com/jp/magic-recovery-key",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/best-sd-card-recovery-methods.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/best-sd-card-recovery-software-step-by-step-guide.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/deleted-file-recovery-from-sd-card.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/fix-corrupted-sd-card.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/free-sd-card-recovery-tool.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/how-to-recover-a-formatted-sd-card.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/how-to-recover-corrupted-sd-card.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/how-to-repair-raw-sd-card.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/kitamura-camera-sd-card-recovery.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/recover-data-from-sd-card.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/recover-formatted-sd-card-windows.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/sandisk-data-recovery.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/sd-card-data-recovery.html",
+            "https://www.amagicsoft.com/jp/memory-card-recovery/sd-card-initialization-recovery.html",
+            "https://www.amagicsoft.com/jp/more",
+            "https://www.amagicsoft.com/jp/news/kb5063878-cause-ssd-failures-and-data-corruption.html",
+            "https://www.amagicsoft.com/jp/photo-recovery/how-to-do-deleted-photo-recovery.html",
+            "https://www.amagicsoft.com/jp/privacy-policy",
+            "https://www.amagicsoft.com/jp/products",
+            "https://www.amagicsoft.com/jp/refund-policy",
+            "https://www.amagicsoft.com/jp/ssd-recovery/find-ssd-data-recovery-software.html",
+            "https://www.amagicsoft.com/jp/ssd-recovery/how-to-extract-data-from-unrecognized-ssds.html",
+            "https://www.amagicsoft.com/jp/ssd-recovery/ssd-data-recovery.html",
+            "https://www.amagicsoft.com/jp/ssd-recovery/ssd-repair-guide.html",
+            "https://www.amagicsoft.com/jp/store",
+            "https://www.amagicsoft.com/jp/terms",
+            "https://www.amagicsoft.com/jp/usb-drive-recovery/best-usb-flash-drive-data-recovery-software.html",
+            "https://www.amagicsoft.com/jp/usb-drive-recovery/external-hard-drive-recovery-solutions.html",
+            "https://www.amagicsoft.com/jp/usb-drive-recovery/how-to-recover-data-from-usb-drives.html",
+            "https://www.amagicsoft.com/jp/user-guide/magic-data-recovery-user-guide.html",
+            "https://www.amagicsoft.com/kr/",
+            "https://www.amagicsoft.com/kr/%EB%B6%84%EB%A5%98/bitlocker-recovery",
+            "https://www.amagicsoft.com/kr/%EB%B6%84%EB%A5%98/deleted-file-recovery",
+            "https://www.amagicsoft.com/kr/%EB%B6%84%EB%A5%98/format-file-recovery",
+            "https://www.amagicsoft.com/kr/%EB%B6%84%EB%A5%98/hdd-recovery",
+            "https://www.amagicsoft.com/kr/%EB%B6%84%EB%A5%98/lost-file-recovery",
+            "https://www.amagicsoft.com/kr/%EB%B6%84%EB%A5%98/memory-card-recovery",
+            "https://www.amagicsoft.com/kr/%EB%B6%84%EB%A5%98/news",
+            "https://www.amagicsoft.com/kr/%EB%B6%84%EB%A5%98/photo-recovery",
+            "https://www.amagicsoft.com/kr/%EB%B6%84%EB%A5%98/ssd-recovery",
+            "https://www.amagicsoft.com/kr/%EB%B6%84%EB%A5%98/usb-drive-recovery",
+            "https://www.amagicsoft.com/kr/%EB%B6%84%EB%A5%98/user-guide",
+            "https://www.amagicsoft.com/kr/%ED%83%9C%EA%B7%B8/%ed%95%98%eb%8a%94-%eb%b0%a9%eb%b2%95",
+            "https://www.amagicsoft.com/kr/%ED%83%9C%EA%B7%B8/magic-data-recovery-kr",
+            "https://www.amagicsoft.com/kr/%ED%83%9C%EA%B7%B8/magic-recovery-key-kr",
+            "https://www.amagicsoft.com/kr/about-amagicsoft",
+            "https://www.amagicsoft.com/kr/bitlocker-recovery/retrieve-your-bitlocker-key.html",
+            "https://www.amagicsoft.com/kr/bitlocker-recovery/tpm%ec%9d%b4%eb%9e%80.html",
+            "https://www.amagicsoft.com/kr/blog",
+            "https://www.amagicsoft.com/kr/buy-magic-data-recovery",
+            "https://www.amagicsoft.com/kr/buy-magic-recovery-key",
+            "https://www.amagicsoft.com/kr/contact",
+            "https://www.amagicsoft.com/kr/deleted-file-recovery/deleted-data-recovery.html",
+            "https://www.amagicsoft.com/kr/deleted-file-recovery/how-to-recover-deleted-files-from-flash-drive-4-ways.html",
+            "https://www.amagicsoft.com/kr/deleted-file-recovery/how-to-retrieve-deleted-files.html",
+            "https://www.amagicsoft.com/kr/deleted-file-recovery/how-to-use-recuva-data-recovery.html",
+            "https://www.amagicsoft.com/kr/deleted-file-recovery/recover-files-deleted-from-recycle-bin.html",
+            "https://www.amagicsoft.com/kr/format-file-recovery/recover-raw-partition.html",
+            "https://www.amagicsoft.com/kr/format-file-recovery/unformat-sd-card.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/best-ntfs-recovery-software.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/buffalo-data-recovery.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/extract-data-from-a-hard-disk.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/hard-disk-drive-recovery-software.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/hard-disk-repair.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/hdd-data-recovery-cost-in-2025.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/hdd-data-recovery.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/hdd-logical-failure.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/how-to-recover-files-from-a-formatted-drive.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/how-to-retrieve-data-from-a-hard-disk.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/lost-partition-recovery.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/pc-data-recovery.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/recover-deleted-files.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/recover-unrecognized-hard-drive.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/the-easiest-way-of-seagate-data-recovery.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/usb-lost-data-recovery.html",
+            "https://www.amagicsoft.com/kr/hdd-recovery/usb-memory-failure.html",
+            "https://www.amagicsoft.com/kr/license-agreement",
+            "https://www.amagicsoft.com/kr/lost-file-recovery/data-recovery-option-in-south-korea.html",
+            "https://www.amagicsoft.com/kr/lost-file-recovery/data-recovery-recommendations.html",
+            "https://www.amagicsoft.com/kr/lost-file-recovery/data-rescue-review-and-magic-data-recovery.html",
+            "https://www.amagicsoft.com/kr/lost-file-recovery/how-to-recover-chk-files.html",
+            "https://www.amagicsoft.com/kr/lost-file-recovery/how-to-recover-overwritten-files-on-windows-10-4-methods.html",
+            "https://www.amagicsoft.com/kr/lost-file-recovery/speed-data-recovery-for-free.html",
+            "https://www.amagicsoft.com/kr/lost-file-recovery/upgrade-to-windows-11-25h2.html",
+            "https://www.amagicsoft.com/kr/lost-file-recovery/vmware-data-recovery.html",
+            "https://www.amagicsoft.com/kr/lost-file-recovery/windows-11-25h2-update-issues-recover-lost-files.html",
+            "https://www.amagicsoft.com/kr/magic-data-recovery",
+            "https://www.amagicsoft.com/kr/magic-recovery-key",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/best-sd-card-recovery-methods.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/best-sd-card-recovery-software-step-by-step-guide.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/deleted-file-recovery-from-sd-card.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/fix-corrupted-sd-card.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/free-sd-card-recovery-tool.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/how-to-recover-a-formatted-sd-card.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/how-to-recover-corrupted-sd-card.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/how-to-repair-raw-sd-card.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/recover-data-from-sd-card.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/recover-formatted-sd-card-windows.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/sandisk-data-recovery.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/sd-card-data-recovery.html",
+            "https://www.amagicsoft.com/kr/memory-card-recovery/sd-card-initialization-recovery.html",
+            "https://www.amagicsoft.com/kr/more",
+            "https://www.amagicsoft.com/kr/news/kb5063878-cause-ssd-failures-and-data-corruption.html",
+            "https://www.amagicsoft.com/kr/photo-recovery/how-to-do-deleted-photo-recovery.html",
+            "https://www.amagicsoft.com/kr/privacy-policy",
+            "https://www.amagicsoft.com/kr/products",
+            "https://www.amagicsoft.com/kr/refund-policy",
+            "https://www.amagicsoft.com/kr/ssd-recovery/find-ssd-data-recovery-software.html",
+            "https://www.amagicsoft.com/kr/ssd-recovery/how-to-extract-data-from-unrecognized-ssds.html",
+            "https://www.amagicsoft.com/kr/ssd-recovery/ssd-data-recovery.html",
+            "https://www.amagicsoft.com/kr/ssd-recovery/ssd-repair-guide.html",
+            "https://www.amagicsoft.com/kr/store",
+            "https://www.amagicsoft.com/kr/terms",
+            "https://www.amagicsoft.com/kr/usb-drive-recovery/best-usb-flash-drive-data-recovery-software.html",
+            "https://www.amagicsoft.com/kr/usb-drive-recovery/external-hard-drive-recovery-solutions.html",
+            "https://www.amagicsoft.com/kr/usb-drive-recovery/how-to-recover-data-from-usb-drives.html",
+            "https://www.amagicsoft.com/kr/user-guide/magic-data-recovery-user-guide.html",
+            "https://www.amagicsoft.com/license-key-recovery/about-windows-11-activation-keys.html",
+            "https://www.amagicsoft.com/license-key-recovery/find-adobe-photoshop-product-key.html",
+            "https://www.amagicsoft.com/license-key-recovery/find-microsoft-office-product-key.html",
+            "https://www.amagicsoft.com/license-key-recovery/find-product-keys-for-installed-software.html",
+            "https://www.amagicsoft.com/license-key-recovery/find-windows-10-product-key.html",
+            "https://www.amagicsoft.com/license-key-recovery/find-windows-11-product-key.html",
+            "https://www.amagicsoft.com/license-key-recovery/find-windows-server-product-key.html",
+            "https://www.amagicsoft.com/license-key-recovery/find-your-3ds-max-product-key.html",
+            "https://www.amagicsoft.com/license-key-recovery/find-youtube-to-mp3-software-keys.html",
+            "https://www.amagicsoft.com/license-key-recovery/fixo-your-microsoft-365-license-will-be-deactivated-soon.html",
+            "https://www.amagicsoft.com/license-key-recovery/get-4k-video-downloader-plus-license-key.html",
+            "https://www.amagicsoft.com/license-key-recovery/get-windows-10-product-key.html",
+            "https://www.amagicsoft.com/license-key-recovery/magic-recovery-key-supports-software-list.html",
+            "https://www.amagicsoft.com/license-key-recovery/obtain-cd-keys-for-windows-10.html",
+            "https://www.amagicsoft.com/license-key-recovery/repair-my-microsoft-office-license.html",
+            "https://www.amagicsoft.com/license-key-recovery/windows-10-support-will-end.html",
+            "https://www.amagicsoft.com/license-key-recovery/windows-product-key-viewer.html",
+            "https://www.amagicsoft.com/lost-file-recovery/data-recovery-option-in-the-us.html",
+            "https://www.amagicsoft.com/lost-file-recovery/data-recovery-recommendations.html",
+            "https://www.amagicsoft.com/lost-file-recovery/data-rescue-review-and-magic-data-recovery.html",
+            "https://www.amagicsoft.com/lost-file-recovery/how-to-recover-chk-files.html",
+            "https://www.amagicsoft.com/lost-file-recovery/how-to-recover-overwritten-files-on-windows-10-4-methods.html",
+            "https://www.amagicsoft.com/lost-file-recovery/speed-data-recovery-for-free.html",
+            "https://www.amagicsoft.com/lost-file-recovery/upgrade-to-windows-11-25h2.html",
+            "https://www.amagicsoft.com/lost-file-recovery/vmware-data-recovery.html",
+            "https://www.amagicsoft.com/lost-file-recovery/windows-11-25h2-update-issues-recover-lost-files.html",
+            "https://www.amagicsoft.com/magic-data-recovery",
+            "https://www.amagicsoft.com/magic-recovery-key",
+            "https://www.amagicsoft.com/memory-card-recovery/best-sd-card-recovery-methods.html",
+            "https://www.amagicsoft.com/memory-card-recovery/best-sd-card-recovery-software-step-by-step-guide.html",
+            "https://www.amagicsoft.com/memory-card-recovery/deleted-file-recovery-from-sd-card.html",
+            "https://www.amagicsoft.com/memory-card-recovery/fix-corrupted-sd-card.html",
+            "https://www.amagicsoft.com/memory-card-recovery/free-sd-card-recovery-tool.html",
+            "https://www.amagicsoft.com/memory-card-recovery/how-to-recover-a-formatted-sd-card.html",
+            "https://www.amagicsoft.com/memory-card-recovery/how-to-recover-corrupted-sd-card.html",
+            "https://www.amagicsoft.com/memory-card-recovery/how-to-repair-raw-sd-card.html",
+            "https://www.amagicsoft.com/memory-card-recovery/recover-data-from-sd-card.html",
+            "https://www.amagicsoft.com/memory-card-recovery/recover-formatted-sd-card-windows.html",
+            "https://www.amagicsoft.com/memory-card-recovery/sandisk-data-recovery.html",
+            "https://www.amagicsoft.com/memory-card-recovery/sd-card-data-recovery.html",
+            "https://www.amagicsoft.com/memory-card-recovery/sd-card-initialization-recovery.html",
+            "https://www.amagicsoft.com/more",
+            "https://www.amagicsoft.com/news/battlefield-6-error-secure-boot.html",
+            "https://www.amagicsoft.com/news/kb5063878-cause-ssd-failures-and-data-corruption.html",
+            "https://www.amagicsoft.com/news/magic-data-recovery-make-file-recovery-easy.html",
+            "https://www.amagicsoft.com/photo-recovery/how-to-do-deleted-photo-recovery.html",
+            "https://www.amagicsoft.com/portfolio-category/business",
+            "https://www.amagicsoft.com/portfolio-category/corporate",
+            "https://www.amagicsoft.com/portfolio-category/creative",
+            "https://www.amagicsoft.com/privacy-policy",
+            "https://www.amagicsoft.com/products",
+            "https://www.amagicsoft.com/refund-policy",
+            "https://www.amagicsoft.com/ssd-recovery/find-ssd-data-recovery-software.html",
+            "https://www.amagicsoft.com/ssd-recovery/how-to-extract-data-from-unrecognized-ssds.html",
+            "https://www.amagicsoft.com/ssd-recovery/ssd-data-recovery.html",
+            "https://www.amagicsoft.com/ssd-recovery/ssd-repair-guide.html",
+            "https://www.amagicsoft.com/store",
+            "https://www.amagicsoft.com/tag/how-to",
+            "https://www.amagicsoft.com/tag/magic-data-recovery",
+            "https://www.amagicsoft.com/tag/magic-recovery-key",
+            "https://www.amagicsoft.com/tag/wiki",
+            "https://www.amagicsoft.com/terms",
+            "https://www.amagicsoft.com/usb-drive-recovery/best-usb-flash-drive-data-recovery-software.html",
+            "https://www.amagicsoft.com/usb-drive-recovery/external-hard-drive-recovery-solutions.html",
+            "https://www.amagicsoft.com/usb-drive-recovery/how-to-recover-data-from-usb-drives.html",
+            "https://www.amagicsoft.com/user-guide/enable-bios-secure-boot.html",
+            "https://www.amagicsoft.com/user-guide/magic-data-recovery-user-guide.html",
+            "https://www.amagicsoft.com/user-guide/user-guide.html",
+            "https://www.amagicsoft.com/wiki/device-manager.html",
+            "https://www.amagicsoft.com/wiki/fix-folder-access-denied-error.html",
+            "https://www.amagicsoft.com/wiki/initialize-disk-error.html",
+            "https://www.amagicsoft.com/wiki/iso-27001.html",
+            "https://www.amagicsoft.com/wiki/learn-what-gpt-is.html",
+            "https://www.amagicsoft.com/wiki/what-is-iscsi-initiator.html",
+            "https://www.amagicsoft.com/wiki/zip-header.html",
+            "https://www.amagicsoft.com/wiki/zip-password-recovery.html",
+            "https://www.amagicsoft.com/wiki/zip-repair-utility.html",
+            "https://www.amagicsoft.com/wiki/zlib-compression.html",
+            "https://www.amagicsoft.com/wiki/zlib-header.html",
+            "https://www.amagicsoft.com/wiki/zsh.html",
+            "https://www.amagicsoft.com/zh/",
+            "https://www.amagicsoft.com/zh/%E6%A8%99%E7%B1%A4/%e5%a6%82%e4%bd%95",
+            "https://www.amagicsoft.com/zh/%E6%A8%99%E7%B1%A4/magic-data-recovery-zh",
+            "https://www.amagicsoft.com/zh/%E6%A8%99%E7%B1%A4/magic-recovery-key",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/bitlocker-recovery",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/deleted-file-recovery",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/format-file-recovery",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/hdd-recovery",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/license-key-recovery",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/lost-file-recovery",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/memory-card-recovery",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/news",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/photo-recovery",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/ssd-recovery",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/usb-drive-recovery",
+            "https://www.amagicsoft.com/zh/%E9%A1%9E%E5%88%A5/user-guide",
+            "https://www.amagicsoft.com/zh/about-amagicsoft",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/7-useful-methods-to-auto-unlock-bitlocker.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/comprehensive-guide-to-bitlocker-to-go.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/disable-bitlocker-in-windows-11-home.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/disable-bitlocker-on-windows-10-and-11.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/enable-bitlocker-using-group-policy.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/find-bitlocker-recovery-key-in-active-directory.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/find-bitlocker-recovery-key-with-key-id.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/how-to-find-your-dell-bitlocker-recovery-key.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/lenovo-bitlocker-issue-on-windows-10.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/recover-your-bitlocker-recovery-key.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/remove-or-bypass-bitlocker-without-recovery-key.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/removing-bitlocker-encryption-a-comprehensive-guide.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/retrieve-your-bitlocker-key.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/should-i-be-worried-about-bitlocker.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/turn-off-bitlocker-in-windows-11.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/unlock-bitlocker-on-windows-10.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/unlock-bitlocker-with-command-line.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/what-is-tpm.html",
+            "https://www.amagicsoft.com/zh/bitlocker-recovery/windows-11-upgrade-and-clean-installation.html",
+            "https://www.amagicsoft.com/zh/blog",
+            "https://www.amagicsoft.com/zh/buy-magic-data-recovery",
+            "https://www.amagicsoft.com/zh/buy-magic-recovery-key",
+            "https://www.amagicsoft.com/zh/contact",
+            "https://www.amagicsoft.com/zh/deleted-file-recovery/deleted-data-recovery.html",
+            "https://www.amagicsoft.com/zh/deleted-file-recovery/how-to-recover-deleted-files-from-flash-drive-4-ways.html",
+            "https://www.amagicsoft.com/zh/deleted-file-recovery/how-to-retrieve-deleted-files.html",
+            "https://www.amagicsoft.com/zh/deleted-file-recovery/how-to-use-recuva-data-recovery.html",
+            "https://www.amagicsoft.com/zh/deleted-file-recovery/recover-files-deleted-from-recycle-bin.html",
+            "https://www.amagicsoft.com/zh/format-file-recovery/recover-raw-partition.html",
+            "https://www.amagicsoft.com/zh/format-file-recovery/unformat-sd-card.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/best-ntfs-recovery-software.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/buffalo-data-recovery.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/extract-data-from-a-hard-disk.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/hard-disk-drive-recovery-software.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/hard-disk-repair.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/hdd-data-recovery-cost-in-2025.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/hdd-data-recovery.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/hdd-logical-failure.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/how-to-recover-files-from-a-formatted-drive.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/how-to-retrieve-data-from-a-hard-disk.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/lost-partition-recovery.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/pc-data-recovery.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/recover-deleted-files.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/recover-unrecognized-hard-drive.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/the-easiest-way-of-seagate-data-recovery.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/usb-lost-data-recovery.html",
+            "https://www.amagicsoft.com/zh/hdd-recovery/usb-memory-failure.html",
+            "https://www.amagicsoft.com/zh/license-agreement",
+            "https://www.amagicsoft.com/zh/license-key-recovery/about-windows-11-activation-keys.html",
+            "https://www.amagicsoft.com/zh/license-key-recovery/find-adobe-photoshop-product-key.html",
+            "https://www.amagicsoft.com/zh/license-key-recovery/find-microsoft-office-product-key.html",
+            "https://www.amagicsoft.com/zh/license-key-recovery/find-product-keys-for-installed-software.html",
+            "https://www.amagicsoft.com/zh/license-key-recovery/find-your-3ds-max-product-key.html",
+            "https://www.amagicsoft.com/zh/license-key-recovery/find-youtube-to-mp3-software-keys.html",
+            "https://www.amagicsoft.com/zh/license-key-recovery/fixo-your-microsoft-365-license-will-be-deactivated-soon.html",
+            "https://www.amagicsoft.com/zh/license-key-recovery/get-4k-video-downloader-plus-license-key.html",
+            "https://www.amagicsoft.com/zh/license-key-recovery/get-windows-10-product-key.html",
+            "https://www.amagicsoft.com/zh/license-key-recovery/obtain-cd-keys-for-windows-10.html",
+            "https://www.amagicsoft.com/zh/license-key-recovery/windows-10-support-will-end.html",
+            "https://www.amagicsoft.com/zh/license-key-recovery/windows-product-key-viewer.html",
+            "https://www.amagicsoft.com/zh/lost-file-recovery/data-recovery-option-in-taiwan.html",
+            "https://www.amagicsoft.com/zh/lost-file-recovery/data-recovery-recommendations.html",
+            "https://www.amagicsoft.com/zh/lost-file-recovery/data-rescue-review-and-magic-data-recovery.html",
+            "https://www.amagicsoft.com/zh/lost-file-recovery/how-to-recover-chk-files.html",
+            "https://www.amagicsoft.com/zh/lost-file-recovery/how-to-recover-overwritten-files-on-windows-10-4-methods.html",
+            "https://www.amagicsoft.com/zh/lost-file-recovery/speed-data-recovery-for-free.html",
+            "https://www.amagicsoft.com/zh/lost-file-recovery/upgrade-to-windows-11-25h2.html",
+            "https://www.amagicsoft.com/zh/lost-file-recovery/vmware-data-recovery.html",
+            "https://www.amagicsoft.com/zh/lost-file-recovery/windows-11-25h2-update-issues-recover-lost-files.html",
+            "https://www.amagicsoft.com/zh/magic-data-recovery",
+            "https://www.amagicsoft.com/zh/magic-recovery-key",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/best-sd-card-recovery-methods.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/best-sd-card-recovery-software-step-by-step-guide.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/deleted-file-recovery-from-sd-card.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/fix-corrupted-sd-card.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/how-to-recover-a-formatted-sd-card.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/how-to-recover-corrupted-sd-card.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/how-to-repair-raw-sd-card.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/recover-data-from-sd-card.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/recover-formatted-sd-card-windows.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/sandisk-data-recovery.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/sd-card-data-recovery.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/sd-card-initialization-recovery.html",
+            "https://www.amagicsoft.com/zh/memory-card-recovery/sd-card-recovery-tool.html",
+            "https://www.amagicsoft.com/zh/more",
+            "https://www.amagicsoft.com/zh/news/kb5063878-cause-ssd-failures-and-data-corruption.html",
+            "https://www.amagicsoft.com/zh/photo-recovery/how-to-do-deleted-photo-recovery.html",
+            "https://www.amagicsoft.com/zh/privacy-policy",
+            "https://www.amagicsoft.com/zh/products",
+            "https://www.amagicsoft.com/zh/refund-policy",
+            "https://www.amagicsoft.com/zh/ssd-recovery/find-ssd-data-recovery-software.html",
+            "https://www.amagicsoft.com/zh/ssd-recovery/how-to-extract-data-from-unrecognized-ssds.html",
+            "https://www.amagicsoft.com/zh/ssd-recovery/ssd-data-recovery.html",
+            "https://www.amagicsoft.com/zh/ssd-recovery/ssd-repair-guide.html",
+            "https://www.amagicsoft.com/zh/store",
+            "https://www.amagicsoft.com/zh/terms",
+            "https://www.amagicsoft.com/zh/usb-drive-recovery/best-usb-flash-drive-data-recovery-software.html",
+            "https://www.amagicsoft.com/zh/usb-drive-recovery/external-hard-drive-recovery-solutions.html",
+            "https://www.amagicsoft.com/zh/usb-drive-recovery/how-to-recover-data-from-usb-drives.html",
+            "https://www.amagicsoft.com/zh/user-guide/magic-data-recovery-user-guide.html"
+        ];
+
+        // Count URLs by language
+        const langCounts = { 'en': 0, 'jp': 0, 'kr': 0, 'zh': 0 };
+        urls.forEach(url => {
+            if (url.includes('/jp/')) langCounts.jp++;
+            else if (url.includes('/kr/')) langCounts.kr++;
+            else if (url.includes('/zh/')) langCounts.zh++;
+            else langCounts.en++;
+        });
+
+        // Update stats
+        document.getElementById('total-count').textContent = urls.length;
+        document.getElementById('lang-stats').innerHTML = `
+            English: ${langCounts.en} | 
+            Japanese: ${langCounts.jp} | 
+            Korean: ${langCounts.kr} | 
+            Traditional Chinese: ${langCounts.zh}
+        `;
+
+        // Function to display URLs
+        function displayUrls(lang = 'all') {
+            const container = document.getElementById('url-container');
+            container.innerHTML = '';
+            
+            let filteredUrls = urls;
+            if (lang !== 'all') {
+                if (lang === 'en') {
+                    filteredUrls = urls.filter(url => !url.includes('/jp/') && !url.includes('/kr/') && !url.includes('/zh/'));
+                } else {
+                    filteredUrls = urls.filter(url => url.includes(`/${lang}/`));
+                }
+            }
+            
+            filteredUrls.forEach(url => {
+                const urlItem = document.createElement('div');
+                urlItem.className = 'url-item';
+                
+                // Extract path from URL for display
+                const path = url.replace('https://www.amagicsoft.com', '');
+                
+                // Generate title based on path
+                let title = "Amagicsoft - ";
+                if (path.includes('/jp/')) {
+                    title += "Japanese Version";
+                } else if (path.includes('/kr/')) {
+                    title += "Korean Version";
+                } else if (path.includes('/zh/')) {
+                    title += "Traditional Chinese Version";
+                } else {
+                    title += "English Version";
+                }
+                
+                // Add specific page titles
+                if (path.includes('magic-data-recovery')) {
+                    title = "Amagicsoft Magic Data Recovery - Professional Data Recovery Software";
+                } else if (path.includes('magic-recovery-key')) {
+                    title = "Amagicsoft Magic Recovery Key - License Key Recovery Tool";
+                } else if (path.includes('bitlocker-recovery')) {
+                    title = "Amagicsoft Bitlocker Recovery - Secure Data Access Solutions";
+                } else if (path.includes('hdd-recovery')) {
+                    title = "Amagicsoft HDD Recovery - Hard Drive Data Recovery Tools";
+                } else if (path.includes('license-key-recovery')) {
+                    title = "Amagicsoft License Key Recovery - Retrieve Software Keys";
+                } else if (path.includes('photo-recovery')) {
+                    title = "Amagicsoft Photo Recovery - Recover Deleted Photos";
+                } else if (path.includes('memory-card-recovery')) {
+                    title = "Amagicsoft Memory Card Recovery - SD Card Data Recovery";
+                } else if (path.includes('usb-drive-recovery')) {
+                    title = "Amagicsoft USB Drive Recovery - Flash Drive Data Recovery";
+                } else if (path.includes('ssd-recovery')) {
+                    title = "Amagicsoft SSD Recovery - Solid State Drive Data Recovery";
+                } else if (path.includes('blog')) {
+                    title = "Amagicsoft Blog - Data Recovery Tips & Tutorials";
+                } else if (path.includes('products')) {
+                    title = "Amagicsoft Products - Data Recovery Solutions";
+                } else if (path.includes('about-amagicsoft')) {
+                    title = "About Amagicsoft - Data Recovery Software Company";
+                } else if (path.includes('contact')) {
+                    title = "Contact Amagicsoft - Get Support & Assistance";
+                }
+                
+                urlItem.innerHTML = `
+                    <div class="url-title">
+                        <a href="${url}" target="_blank">${title}</a>
+                    </div>
+                    <div class="url-path">${path}</div>
+                `;
+                container.appendChild(urlItem);
+            });
+        }
+
+        // Initial display
+        displayUrls();
+
+        // Add event listeners to filter buttons
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Display filtered URLs
+                displayUrls(button.dataset.lang);
+            });
+        });
+    </script>
+</body>
 </html>
+
+
+
